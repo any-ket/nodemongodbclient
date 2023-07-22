@@ -2,7 +2,8 @@ import MongoDBClient from "../src";
 
 // Mock MongoDB connection URL and database name for testing purposes
 const testUrl = 'mongodb+srv://aniket:GxH86KPVdf9h4bnv@cluster0.jbgwsqz.mongodb.net/?retryWrites=true&w=majority';
-const testDbName = 'test_db';
+
+const testDbName = 'testDb';
 
 describe('MongoDBClient', () => {
   let client: MongoDBClient;
