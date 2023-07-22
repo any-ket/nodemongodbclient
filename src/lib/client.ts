@@ -1,4 +1,4 @@
-import { MongoClient, Db, Collection, InsertOneResult, UpdateResult, DeleteResult, BulkWriteResult, FindOptions, Document, AnyBulkWriteOperation, UpdateOptions, DeleteOptions } from 'mongodb';
+import { MongoClient, Db, Collection, InsertOneResult, UpdateResult, DeleteResult, BulkWriteResult, FindOptions, Document, AnyBulkWriteOperation, UpdateOptions, DeleteOptions, InsertManyResult } from 'mongodb';
 
 type MongoOptions = {
   includeDeleted?: boolean;
@@ -25,7 +25,7 @@ export default class MongoDBClient {
     delete this.db;
   }
 
-  getCollection(collectionName: string): Collection | undefined {
+  private _getCollection(collectionName: string): Collection | undefined {
     return this.db?.collection(collectionName);
   }
 
@@ -40,12 +40,17 @@ export default class MongoDBClient {
   }
 
   async insert(collectionName: string, data: Document): Promise<InsertOneResult | undefined> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     return await collection?.insertOne(data);
   }
 
+  async insertMany(collectionName: string, data: Document[]): Promise<InsertManyResult | undefined> {
+    const collection = this._getCollection(collectionName);
+    return await collection?.insertMany(data);
+  }
+
   async find(collectionName: string, query?: object, options?: MongoOptions & FindOptions): Promise<Document[] | []> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     if(query)
       query = this._buildQuery(query, options);
 
@@ -53,7 +58,7 @@ export default class MongoDBClient {
   }
 
   async updateMany(collectionName: string, query: object, updateData: object, options?: MongoOptions & UpdateOptions): Promise<UpdateResult | undefined> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     if(query)
       query = this._buildQuery(query, options);
 
@@ -61,7 +66,7 @@ export default class MongoDBClient {
   }
 
   async updateOne(collectionName: string, query: object, updateData: object, options?: MongoOptions & UpdateOptions): Promise<UpdateResult | undefined> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     if(query)
       query = this._buildQuery(query, options);
 
@@ -69,7 +74,7 @@ export default class MongoDBClient {
   }
 
   async modifyMany(collectionName: string, query: object, updateData: object, options?: MongoOptions & UpdateOptions): Promise<UpdateResult | undefined> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     if(query)
       query = this._buildQuery(query, options);
 
@@ -77,7 +82,7 @@ export default class MongoDBClient {
   }
 
   async modifyOne(collectionName: string, query: object, updateData: object, options?: MongoOptions & UpdateOptions): Promise<UpdateResult | undefined> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     if(query)
       query = this._buildQuery(query, options);
 
@@ -85,17 +90,17 @@ export default class MongoDBClient {
   }
 
   async deleteOne(collectionName: string, query: object): Promise<UpdateResult | undefined> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     return await collection?.updateOne(query, { $set:{ deleted: true, deletedAt: Date.now() } });
   }
 
   async deleteMany(collectionName: string, query: object): Promise<UpdateResult | undefined> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     return await collection?.updateMany(query, { $set:{ deleted: true, deletedAt: Date.now() } });
   }
 
   async permanentlyDeleteOne(collectionName: string, query: object, options?: MongoOptions & DeleteOptions): Promise<DeleteResult | undefined> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     if(query)
       query = this._buildQuery(query, options);
 
@@ -103,7 +108,7 @@ export default class MongoDBClient {
   }
 
   async permanentlyDeleteMany(collectionName: string, query: object, options?: MongoOptions & DeleteOptions): Promise<DeleteResult | undefined> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     if(query)
       query = this._buildQuery(query, options);
 
@@ -111,7 +116,7 @@ export default class MongoDBClient {
   }
 
   async bulkWrite(collectionName: string, operations: AnyBulkWriteOperation[]): Promise<BulkWriteResult | undefined> {
-    const collection = this.getCollection(collectionName);
+    const collection = this._getCollection(collectionName);
     return await collection?.bulkWrite(operations);
   }
 }
