@@ -29,6 +29,21 @@ describe('MongoDBClient', () => {
     expect(insertedId).toBeDefined();
   });
 
+  it('should findOne document', async () => {
+    // Insert some test data
+    const testData = [
+      { name: 'Alice', age: 28 },
+      { name: 'Bob', age: 32 },
+      { name: 'Charlie', age: 27 },
+    ];
+    await client.insertMany(testCollectionName, testData);
+
+    const query = { name: 'Bob' };
+    const foundDoc = await client.findOne(testCollectionName, query);
+    expect(foundDoc).toBeDefined();
+    expect(foundDoc?.name).toBe('Bob');
+  });
+
   it('should find documents', async () => {
     // Insert some test data
     const testData = [

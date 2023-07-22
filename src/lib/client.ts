@@ -49,6 +49,14 @@ export default class MongoDBClient {
     return await collection?.insertMany(data);
   }
 
+  async findOne(collectionName: string, query?: object, options?: MongoOptions & FindOptions): Promise<Document |  null> {
+    const collection = this._getCollection(collectionName);
+    if(query)
+      query = this._buildQuery(query, options);
+
+    return collection ? await collection.findOne(query || {}) : null;
+  }
+
   async find(collectionName: string, query?: object, options?: MongoOptions & FindOptions): Promise<Document[] | []> {
     const collection = this._getCollection(collectionName);
     if(query)
