@@ -1,0 +1,28 @@
+{
+  "name": "nodemongodbclient",
+  "version": "1.0.0",
+  "description": "Client Library for mongoDB integration in Node.js Applications",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/any-ket/nodemongodbclient.git"
+  },
+  "author": "Aniket Singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/any-ket/nodemongodbclient/issues"
+  },
+  "homepage": "https://github.com/any-ket/nodemongodbclient#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.3",
+    "jest": "^29.6.1",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "mongodb": "5.7"
+  }
+}
