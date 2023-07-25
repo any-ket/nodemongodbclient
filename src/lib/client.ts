@@ -1,6 +1,6 @@
 import { MongoClient, Db, Collection, InsertOneResult, UpdateResult, DeleteResult, BulkWriteResult, FindOptions, Document, AnyBulkWriteOperation, UpdateOptions, DeleteOptions, InsertManyResult } from 'mongodb';
 
-interface MongoOptions = {
+interface MongoOptions {
   includeDeleted?: boolean;
 }
 
