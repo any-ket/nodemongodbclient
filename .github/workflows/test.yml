@@ -18,5 +18,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
-      - run: npm test ${{ secrets.MONGOPATH }}
+      - run: npm ci 
+      - run: npm test
+        env:
+          MONGO_PATH: ${{ secrets.MONGOPATH }}
