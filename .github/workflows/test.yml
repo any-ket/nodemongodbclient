@@ -19,4 +19,4 @@ jobs:
         with:
           node-version: 16
       - run: npm ci
-      - run: npm test ${{ secrets.mongopath }}
+      - run: npm test ${{ secrets.MONGOPATH }}
