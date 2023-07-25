@@ -1,7 +1,10 @@
 import MongoDBClient from "../src";
+let mongoPath = process.env.MONGO_PATH;
+if(!mongoPath)
+  mongoPath = "localhost:27017"
 
 // Mock MongoDB connection URL and database name for testing purposes
-const testUrl = 'mongodb+srv://aniket:GxH86KPVdf9h4bnv@cluster0.jbgwsqz.mongodb.net/?retryWrites=true&w=majority';
+const testUrl = 'mongodb+srv://' + mongoPath + '/?retryWrites=true&w=majority';
 const testDbName = 'testDb';
 const testCollectionName = 'test_collection';
 
