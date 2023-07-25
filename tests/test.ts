@@ -1,5 +1,5 @@
 import MongoDBClient from "../src";
-let mongoPath = process.argv[2];
+let mongoPath = process.env.MONGO_PATH;
 if(!mongoPath)
   mongoPath = "localhost:27017"
 
