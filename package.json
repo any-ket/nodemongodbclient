@@ -4,7 +4,6 @@
   "description": "Client Library for mongoDB integration in Node.js Applications",
   "main": "dist/index.js",
   "scripts": {
-    "postinstall": "tsc -p ./tsconfig.json",
     "test": "jest"
   },
   "repository": {
