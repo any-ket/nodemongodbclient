@@ -54,7 +54,7 @@ export default class MongoDBClient {
     if(query)
       query = this._buildQuery(query, options);
 
-    return collection ? await collection.findOne(query || {}) : null;
+    return collection ? await collection.findOne(query || {}, options) : null;
   }
 
   async find(collectionName: string, query?: object, options?: MongoOptions & FindOptions): Promise<Document[] | []> {
