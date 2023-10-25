@@ -22,3 +22,9 @@ jobs:
       - run: npm test
         env:
           MONGO_PATH: ${{ secrets.MONGOPATH }}
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+
+
