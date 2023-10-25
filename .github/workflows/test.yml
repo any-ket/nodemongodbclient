@@ -22,6 +22,7 @@ jobs:
       - run: npm test
         env:
           MONGO_PATH: ${{ secrets.MONGOPATH }}
+      - run: npm config set registry https://registry.npmjs.org/
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
