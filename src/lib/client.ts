@@ -81,6 +81,14 @@ export default class MongoDBClient {
     return await collection?.updateOne(query, { $set: updateData }, options);
   }
 
+  async findOneAndUpdate(collectionName: string, query: object, updateData: object, options: MongoOptions & FindOneAndUpdateOptions): Promise<ModifyResult | undefined> {
+    const collection = this._getCollection(collectionName);
+    if(query)
+      query = this._buildQuery(query, options);
+
+    return await collection?.findOneAndUpdate(query, { $set: updateData }, options);
+  }
+
   async modifyMany(collectionName: string, query: object, updateData: object, options?: MongoOptions & UpdateOptions): Promise<UpdateResult | undefined> {
     const collection = this._getCollection(collectionName);
     if(query)
