@@ -1,4 +1,4 @@
-import { MongoClient, Db, Collection, InsertOneResult, UpdateResult, DeleteResult, BulkWriteResult, FindOptions, Document, AnyBulkWriteOperation, UpdateOptions, DeleteOptions, InsertManyResult } from 'mongodb';
+import { MongoClient, Db, Collection, InsertOneResult, UpdateResult, DeleteResult, BulkWriteResult, FindOptions, Document, AnyBulkWriteOperation, UpdateOptions, DeleteOptions, InsertManyResult, FindOneAndUpdateOptions, ModifyResult } from 'mongodb';
 
 interface MongoOptions {
   includeDeleted?: boolean
@@ -54,7 +54,7 @@ export default class MongoDBClient {
     if(query)
       query = this._buildQuery(query, options);
 
-    return collection ? await collection.findOne(query || {}) : null;
+    return collection ? await collection.findOne(query || {}, options) : null;
   }
 
   async find(collectionName: string, query?: object, options?: MongoOptions & FindOptions): Promise<Document[] | []> {
@@ -79,6 +79,14 @@ export default class MongoDBClient {
       query = this._buildQuery(query, options);
 
     return await collection?.updateOne(query, { $set: updateData }, options);
+  }
+
+  async findOneAndUpdate(collectionName: string, query: object, updateData: object, options: MongoOptions & FindOneAndUpdateOptions): Promise<ModifyResult | undefined> {
+    const collection = this._getCollection(collectionName);
+    if(query)
+      query = this._buildQuery(query, options);
+
+    return await collection?.findOneAndUpdate(query, { $set: updateData }, options);
   }
 
   async modifyMany(collectionName: string, query: object, updateData: object, options?: MongoOptions & UpdateOptions): Promise<UpdateResult | undefined> {
