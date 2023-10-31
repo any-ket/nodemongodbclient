@@ -17,6 +17,8 @@ jobs:
           node-version: 16
       - run: npm ci
       - run: npm test
+        env:
+          MONGO_PATH: ${{ secrets.MONGOPATH }}
 
   publish-gpr:
     needs: build
