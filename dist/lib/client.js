@@ -41,16 +41,16 @@ class MongoDBClient {
         const modifiedQuery = Object.assign(Object.assign({}, query), { deleted: { $ne: true } });
         return modifiedQuery;
     }
-    insert(collectionName, data) {
+    insert(collectionName, data, options) {
         return __awaiter(this, void 0, void 0, function* () {
             const collection = this._getCollection(collectionName);
-            return yield (collection === null || collection === void 0 ? void 0 : collection.insertOne(data));
+            return yield (collection === null || collection === void 0 ? void 0 : collection.insertOne(data, options));
         });
     }
-    insertMany(collectionName, data) {
+    insertMany(collectionName, data, options) {
         return __awaiter(this, void 0, void 0, function* () {
             const collection = this._getCollection(collectionName);
-            return yield (collection === null || collection === void 0 ? void 0 : collection.insertMany(data));
+            return yield (collection === null || collection === void 0 ? void 0 : collection.insertMany(data, options));
         });
     }
     findOne(collectionName, query, options) {
@@ -109,16 +109,16 @@ class MongoDBClient {
             return yield (collection === null || collection === void 0 ? void 0 : collection.updateOne(query, updateData, options));
         });
     }
-    deleteOne(collectionName, query) {
+    deleteOne(collectionName, query, options) {
         return __awaiter(this, void 0, void 0, function* () {
             const collection = this._getCollection(collectionName);
-            return yield (collection === null || collection === void 0 ? void 0 : collection.updateOne(query, { $set: { deleted: true, deletedAt: Date.now() } }));
+            return yield (collection === null || collection === void 0 ? void 0 : collection.updateOne(query, { $set: { deleted: true, deletedAt: Date.now() } }, options));
         });
     }
-    deleteMany(collectionName, query) {
+    deleteMany(collectionName, query, options) {
         return __awaiter(this, void 0, void 0, function* () {
             const collection = this._getCollection(collectionName);
-            return yield (collection === null || collection === void 0 ? void 0 : collection.updateMany(query, { $set: { deleted: true, deletedAt: Date.now() } }));
+            return yield (collection === null || collection === void 0 ? void 0 : collection.updateMany(query, { $set: { deleted: true, deletedAt: Date.now() } }, options));
         });
     }
     permanentlyDeleteOne(collectionName, query, options) {
@@ -137,10 +137,10 @@ class MongoDBClient {
             return yield (collection === null || collection === void 0 ? void 0 : collection.deleteMany(query, options));
         });
     }
-    bulkWrite(collectionName, operations) {
+    bulkWrite(collectionName, operations, options) {
         return __awaiter(this, void 0, void 0, function* () {
             const collection = this._getCollection(collectionName);
-            return yield (collection === null || collection === void 0 ? void 0 : collection.bulkWrite(operations));
+            return yield (collection === null || collection === void 0 ? void 0 : collection.bulkWrite(operations, options));
         });
     }
 }
