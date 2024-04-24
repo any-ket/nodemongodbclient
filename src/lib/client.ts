@@ -8,7 +8,7 @@ export default class MongoDBClient {
   private client: MongoClient;
   private dbName: string;
   private db: Db | undefined;
-  private session: ClientSession
+  private session: ClientSession | undefined;
 
 
   constructor(dbName: string, url: string) {
