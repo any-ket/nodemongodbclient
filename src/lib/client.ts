@@ -1,4 +1,4 @@
-import { MongoClient, Db, Collection, InsertOneResult, UpdateResult, DeleteResult, BulkWriteResult, FindOptions, Document, AnyBulkWriteOperation, UpdateOptions, DeleteOptions, InsertManyResult, FindOneAndUpdateOptions, ModifyResult } from 'mongodb';
+import { MongoClient, Db, Collection, InsertOneResult, UpdateResult, DeleteResult, BulkWriteResult, FindOptions, Document, AnyBulkWriteOperation, UpdateOptions, DeleteOptions, InsertManyResult, FindOneAndUpdateOptions, ModifyResult, ClientSession } from 'mongodb';
 
 interface MongoOptions {
   includeDeleted?: boolean
@@ -8,6 +8,7 @@ export default class MongoDBClient {
   private client: MongoClient;
   private dbName: string;
   private db: Db | undefined;
+  private session: ClientSession
 
 
   constructor(dbName: string, url: string) {
@@ -23,6 +24,11 @@ export default class MongoDBClient {
   closeConnection(): void {
     this.client.close();
     delete this.db;
+  }
+
+  createSession(): ClientSession {
+    this.session = this.client.startSession();
+    return this.session;
   }
 
   private _getCollection(collectionName: string): Collection | undefined {
