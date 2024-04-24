@@ -1,0 +1,50 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: Node.js Package Publish
+
+on:
+  push:
+    branches:  [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm test
+        env:
+          MONGO_PATH: ${{ secrets.MONGOPATH }}
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm ci
+      - run: npm run build
+      - name: Update your package.json with an npm pre-release version, and update dependencies with pre-release versions
+        # You may pin to the exact commit or the version.
+        # uses: adobe/update-prerelease-npm-version@fa685646c46753ef9b216ae93ff8761369bfa5b1
+        uses: adobe/update-prerelease-npm-version@v1.1.0
+        with:
+          # the pre-release tag to set
+          pre-release-tag: pre
+      - run: npm config set registry https://registry.npmjs.org/
+      - name: Authenticate with npm
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+

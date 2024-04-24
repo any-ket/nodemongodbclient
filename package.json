@@ -1,6 +1,6 @@
 {
   "name": "nodemongodbclient",
-  "version": "1.0.0",
+  "version": "1.0.6",
   "description": "Client Library for mongoDB integration in Node.js Applications",
   "main": "dist/index.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "ts-jest": "^29.1.1"
   },
   "dependencies": {
-    "mongodb": "5.7",
+    "mongodb": "5.8",
     "typescript": "^5.1.6"
   }
 }
