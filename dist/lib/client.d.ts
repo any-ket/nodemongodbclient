@@ -1,4 +1,4 @@
-import { InsertOneResult, UpdateResult, DeleteResult, BulkWriteResult, FindOptions, Document, AnyBulkWriteOperation, UpdateOptions, DeleteOptions, InsertManyResult } from 'mongodb';
+import { InsertOneResult, UpdateResult, DeleteResult, BulkWriteResult, FindOptions, Document, AnyBulkWriteOperation, UpdateOptions, DeleteOptions, InsertManyResult, FindOneAndUpdateOptions, ModifyResult, ClientSession } from 'mongodb';
 interface MongoOptions {
     includeDeleted?: boolean;
 }
@@ -6,9 +6,11 @@ export default class MongoDBClient {
     private client;
     private dbName;
     private db;
+    private session;
     constructor(dbName: string, url: string);
     connect(): Promise<void>;
     closeConnection(): void;
+    createSession(): ClientSession;
     private _getCollection;
     private _buildQuery;
     insert(collectionName: string, data: Document): Promise<InsertOneResult | undefined>;
@@ -17,6 +19,7 @@ export default class MongoDBClient {
     find(collectionName: string, query?: object, options?: MongoOptions & FindOptions): Promise<Document[] | []>;
     updateMany(collectionName: string, query: object, updateData: object, options?: MongoOptions & UpdateOptions): Promise<UpdateResult | undefined>;
     updateOne(collectionName: string, query: object, updateData: object, options?: MongoOptions & UpdateOptions): Promise<UpdateResult | undefined>;
+    findOneAndUpdate(collectionName: string, query: object, updateData: object, options: MongoOptions & FindOneAndUpdateOptions): Promise<ModifyResult | undefined>;
     modifyMany(collectionName: string, query: object, updateData: object, options?: MongoOptions & UpdateOptions): Promise<UpdateResult | undefined>;
     modifyOne(collectionName: string, query: object, updateData: object, options?: MongoOptions & UpdateOptions): Promise<UpdateResult | undefined>;
     deleteOne(collectionName: string, query: object): Promise<UpdateResult | undefined>;

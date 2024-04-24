@@ -25,6 +25,10 @@ class MongoDBClient {
         this.client.close();
         delete this.db;
     }
+    createSession() {
+        this.session = this.client.startSession();
+        return this.session;
+    }
     _getCollection(collectionName) {
         var _a;
         return (_a = this.db) === null || _a === void 0 ? void 0 : _a.collection(collectionName);
@@ -54,7 +58,7 @@ class MongoDBClient {
             const collection = this._getCollection(collectionName);
             if (query)
                 query = this._buildQuery(query, options);
-            return collection ? yield collection.findOne(query || {}) : null;
+            return collection ? yield collection.findOne(query || {}, options) : null;
         });
     }
     find(collectionName, query, options) {
@@ -79,6 +83,14 @@ class MongoDBClient {
             if (query)
                 query = this._buildQuery(query, options);
             return yield (collection === null || collection === void 0 ? void 0 : collection.updateOne(query, { $set: updateData }, options));
+        });
+    }
+    findOneAndUpdate(collectionName, query, updateData, options) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const collection = this._getCollection(collectionName);
+            if (query)
+                query = this._buildQuery(query, options);
+            return yield (collection === null || collection === void 0 ? void 0 : collection.findOneAndUpdate(query, { $set: updateData }, options));
         });
     }
     modifyMany(collectionName, query, updateData, options) {
